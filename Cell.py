@@ -1,59 +1,41 @@
 import random
 
+
 class Fire:
     #  A Fire cell spreads by burning nearby vegetation
     #  A fire cell lives for 3 generations
     #  A fire cell adjacent to a water cell dies immediately and creates fertile ground
+    def __init__(self, age=0, lifespan=5, location=(0, 0)):
+        self.age = age
+        self.lifespan = lifespan
+        self.future_state = []
+        self.location = location
 
-class FertileGround:
-    # Fertile ground given enough proximity to Wet tiles is
+    def __str__(self):
+        return "F"
+
+
+class Water:
+    #  A water cell spreads and is consumed by vegetation
+    #  A water cell extinguishes Fire and creates age 0 vegetation
+    def __init__(self, age=0, lifespan=2, direction=(1, 0), location=(0, 0)):
+        self.age = age
+        self.lifespan = lifespan
+        self.future_state = []
+        # determine a direction that this water will travel
+        directions = ((0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1))
+        self.direction = directions[directions.index(direction) + random.randrange(-1, 2)]
+        self.location = location
+
+    def __str__(self):
+        return "W"
+
 
 class Vegetation:
-    #  A Vegetation Cell stays alive indefinitely
-    #  A Vegetation Cell catches fire and becomes a Fire Cell if adjacent to a fire Cell
-
-class WaterHead:
-    #  A water Cell has a direction it flows creating new water cells in front of it
-    #  it pits out fires and immediately dissapears
-    #  it picks a new direction as it travels
-
-    def __init__(self, direction = (0,1), age = 0, current = 3, lifespan = 20):
-        # direction is one of of the cardinal directions or the half cardinals
-        self.direction = direction
+    def __init__(self, age=0, location=(0, 0)):
         self.age = age
-        self.current = current
-        self.lifespan = lifespan
-
-    def step(self):
-        # return a new WaterHead to be placed in a new location
-        self.age += 1
-        if self.age == self.lifespan:
-            return
-        if self.age%self.current == 0:
-            directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
-            index = directions.index(self.direction)
-            index_dx = random.randrange(-1,2)
-            self.direction = directions[index + index_dx]
-        return WaterHead(self.direction, self.age, self.current, self.lifespan)
+        self.future_state = []
+        self.location = location
 
     def __str__(self):
-        return "WH"
-
-class WaterSource:
-    # Creates water heads and sends them on their way
-    # creates a new water head every a to b steps
-    def __init__(self, direction = (0,1), age = 0):
-        self.direction = direction
-        self.age = age
-
-    def __str__(self):
-        return "WS"
-
-class Wet:
-    #  A wet cell is the tail of a water_head cell
-    def __init__(self,age=0, lifespan = 3):
-        self.age = age
-        
-
-    def step(self):
-        self.age
+        return "V"
