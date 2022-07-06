@@ -64,30 +64,37 @@ class PracticeBoard(SampleBase):
                 aquarium.lightning(10)
                 # Flash White on screen
 
+                im = Image.new("RGB", size)
+                draw = ImageDraw.Draw(im, None)
                 for x in range(0, len(aquarium.grid)):
                     for y in range(0, len(aquarium.grid[0])):
-                        im = Image.new("RGB", size)
-                        draw = ImageDraw.Draw(im, None)
                         draw.point((x, y), (255, 255, 255))
+                im = ImageOps.flip(im)
                 offset_canvas.SetImage(im, 0, unsafe=False)  # Project the image to the RGB-Matrix
                 offset_canvas = matrix.SwapOnVSync(offset_canvas)  # Update the matrix
-                time.sleep(0.05)
+
+                time.sleep(0.1)
+
+                im = Image.new("RGB", size)
+                draw = ImageDraw.Draw(im, None)
                 for x in range(0, len(aquarium.grid)):
                     for y in range(0, len(aquarium.grid[0])):
-                        im = Image.new("RGB", size)
-                        draw = ImageDraw.Draw(im, None)
                         draw.point((x, y), (200, 200, 200))
+                im = ImageOps.flip(im)
                 offset_canvas.SetImage(im, 0, unsafe=False)  # Project the image to the RGB-Matrix
                 offset_canvas = matrix.SwapOnVSync(offset_canvas)  # Update the matrix
-                time.sleep(0.05)
+
+                time.sleep(0.1)
+
+                im = Image.new("RGB", size)
+                draw = ImageDraw.Draw(im, None)
                 for x in range(0, len(aquarium.grid)):
                     for y in range(0, len(aquarium.grid[0])):
-                        im = Image.new("RGB", size)
-                        draw = ImageDraw.Draw(im, None)
                         draw.point((x, y), (255, 255, 255))
+                im = ImageOps.flip(im)
                 offset_canvas.SetImage(im, 0, unsafe=False)  # Project the image to the RGB-Matrix
                 offset_canvas = matrix.SwapOnVSync(offset_canvas)  # Update the matrix
-                time.sleep(0.05)
+                time.sleep(0.1)
 
             im = Image.new("RGB", size)
             draw = ImageDraw.Draw(im, None)
