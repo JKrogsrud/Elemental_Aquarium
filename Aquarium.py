@@ -57,7 +57,7 @@ class Aquarium:
 
                     if len(current_cell.future_state) == 0:
                         current_cell.age += 1
-
+                        current_cell.color = (int(255/current_cell.age), 20*current_cell.age, 0*current_cell.age)
                         if current_cell.age == current_cell.lifespan:
 
                             current_cell.future_state.append(Cell.Vegetation(age=0, location=(x, y)))
@@ -70,7 +70,7 @@ class Aquarium:
 
                     water_count = 0
 
-                    for crd in nt.generate_neighborhood((x, y), 1, 3):
+                    for crd in nt.generate_neighborhood((x, y), 1, 4):
 
                         try:
                             neighbor = self.grid[crd[0]][crd[1]]
@@ -93,10 +93,19 @@ class Aquarium:
 
                     if water_count > 2:
                         current_cell.age += 1
+                        R, G, B = current_cell.color
+                        G += 40
+                        if G > 255:
+                            G = 255
+                        current_cell.color = (R, G, B)
+
 
                 if isinstance(self.grid[x][y], Cell.Water):
                     if current_cell.age < current_cell.lifespan:
                         current_cell.age += 1
+                        R, G, B = current_cell.color
+                        B = int(B/2)
+                        current_cell.color = (R, G, B)
                     else:
                         current_cell.future_state.append(Cell.Vegetation(age=2, location=(x, y)))
 
@@ -107,6 +116,25 @@ class Aquarium:
                     self.grid[x][y] = current_cell.future_state[random.randrange(0,len(current_cell.future_state))]
 
         self.generations += 1
+
+    def rain(self, num_cells):
+        # determine a number of random cells to become Water
+        rain_count = 0
+        while rain_count < num_cells:
+            x_coord = random.randrange(0, self.row)
+            y_coord = random.randrange(0, self.column)
+            self.grid[x_coord][y_coord] = Cell.Water(age=0, lifespan=2, direction=(1, 0), location=(x_coord, y_coord), color=(0, 0, 255))
+            rain_count += 1
+
+    def lightning(self, num_strikes):
+        # determine a number of random cells to become Fire
+        # determine a number of random cells to become Water
+        strike_count = 0
+        while strike_count < num_strikes:
+            x_coord = random.randrange(0, self.row)
+            y_coord = random.randrange(0, self.column)
+            self.grid[x_coord][y_coord] = Cell.Fire(age=0, lifespan=5, location=(x_coord, y_coord), color=(255, 0, 0))
+            strike_count += 1
 
     def display(self):
         for y in range(0, self.row):
